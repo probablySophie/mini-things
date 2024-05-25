@@ -7,3 +7,4 @@ edition = "2021"
 
 [dependencies]
 crossterm = "0.27.0"
+mini_core = { version = "0.1.0", path = "../core" }

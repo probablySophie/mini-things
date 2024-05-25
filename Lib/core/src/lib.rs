@@ -1,17 +1,13 @@
+#[allow(dead_code)]
+
+mod scene;
+pub use scene::*;
+
+pub mod csv;
+pub mod file;
+
 pub fn add(left: usize, right: usize) -> usize {
     left + right
-}
-
-mod scene
-{
-	// Basically everything we make will need different scenes with diferent drawing & logic
-}
-
-mod io
-{
-	pub fn save() {}
-
-	pub fn load() {}
 }
 
 #[cfg(test)]
