@@ -74,14 +74,17 @@ impl Board
 
 		// TODO: Update the tile & keyboard LetterStates
 
+		let result = self.mark_word(guess_word);
+
+		self.active_row += 1; // update where we're looking
+		self.active_col = 0;
+
 		// did we win?
-		if guess_word == self.word
+		if result
 		{
 			return Ok(true) // yay!
 		}
 
-		self.active_row += 1; // update where we're looking
-		self.active_col = 0;
 		Ok(false) // if we get here, the guess was wrong
 	}
 
@@ -165,5 +168,80 @@ impl Board
 		}
 
 		guess_word
+	}
+
+
+	fn mark_word (&mut self, guess: String) -> bool
+	{
+		let mut score: [LetterState; BOARD_WIDTH] = [LetterState::Wrong; BOARD_WIDTH];
+		let mut word: Vec<char> = self.word.chars().collect();
+
+
+		// Is this an efficient way of doing this?  No.
+		// Does it work?  Maybe?
+
+		// check for perfects
+		for (i, letter) in guess.chars().enumerate()
+		{
+			for (x, word_letter) in word.clone().iter().enumerate()
+			{
+				// if the letter is in the word string AND they're in the same location
+				if (&letter == word_letter) && (i == x)
+				{
+					score[i] = LetterState::Perfect;
+
+					word[x] = ' ';
+				}
+			}
+		}
+
+		// go back for almosts
+		for (i, letter) in guess.chars().enumerate()
+		{
+			for (x, word_letter) in word.clone().iter().enumerate()
+			{
+				if &letter == word_letter
+				{
+					score[i] = LetterState::Almost;
+
+					word[x] = ' ';
+				}
+			}
+		}
+
+		// THEN update our keyboard
+
+		for (key_num, key) in self.keyboard.clone().iter().enumerate()
+		{
+			for (i, letter) in guess.chars().enumerate()
+			{
+				if key.1 == letter
+				{
+					// only update if we have a positive information change
+					match (score[i], key.0)
+					{
+						(_, LetterState::Unused)  |  // anything is an improvement over unused
+						(LetterState::Perfect, _) |  // perfect is always best
+						(LetterState::Almost, LetterState::Wrong) // almost > wrong
+						=> {self.keyboard[key_num].0 = score[i]},
+
+						_ => {}, // otherwise, do nothing	
+					}
+				}
+			}
+		}
+
+		// Then update the board
+
+		for (i, score) in score.iter().enumerate()
+		{
+			self.tiles[self.active_row][i].0 = *score;
+		}
+
+		if guess == self.word
+		{
+			return true; // we win
+		}
+		false // we don't win :(
 	}
 }
