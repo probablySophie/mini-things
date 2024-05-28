@@ -5,6 +5,26 @@ pub mod print;
 pub mod scene;
 
 
+
+
+
+
+pub mod key
+{
+	pub const ESCAPE: u8 = 27;
+	pub const DELETE: u8 = 127;
+	pub const ENTER:  u8 = 13;
+}
+
+
+
+
+
+
+
+
+
+
 pub fn add(left: usize, right: usize) -> usize {
     left + right
 }
