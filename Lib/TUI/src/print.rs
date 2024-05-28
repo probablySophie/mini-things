@@ -1,9 +1,8 @@
 
 use std::io::stdout;
 
-use crossterm::{cursor, execute, style::Print};
+use crossterm::{cursor, execute, style::{Print, StyledContent}};
 
-// TODO: Swap out String for crossterm's fancy string
 pub fn string(string: String, x: u16, y: u16)
 {
 	execute!(
@@ -14,6 +13,15 @@ pub fn string(string: String, x: u16, y: u16)
 		.expect("Failed to print string");
 }
 
+pub fn styled(string: StyledContent<String>, x: u16, y: u16)
+{
+	execute!(
+			stdout(),
+			cursor::MoveTo(x,y),
+			Print(string),
+		)
+		.expect("Failed to print string");
+}
 
 pub fn vec(vec: Vec<String>, x: u16, y: u16)
 {
