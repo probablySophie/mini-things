@@ -1,6 +1,6 @@
 #[allow(dead_code)]
 
-mod game;
+pub mod game;
 
 pub fn add(left: usize, right: usize) -> usize {
     left + right
