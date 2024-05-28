@@ -1,7 +1,5 @@
 use std::io::{self, Read};
 
-const ESCAPE_KEY: u8 = 27;
-
 
 pub struct SceneValues
 {
@@ -14,7 +12,7 @@ impl Default for SceneValues
 	{
         Self
 		{
-			break_key_val: ESCAPE_KEY,
+			break_key_val: super::key::ESCAPE,
 			should_exit_val: false,
 		}
     }
