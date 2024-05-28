@@ -5,20 +5,26 @@
 
 use super::{letter_state::LetterState, words};
 
-const BOARD_WIDTH:  usize = 5;
-const BOARD_HEIGHT: usize = 6;
+pub const BOARD_WIDTH:  usize = 5;
+pub const BOARD_HEIGHT: usize = 6;
+
+pub type BoardTiles = [
+			[(LetterState, char); BOARD_WIDTH] // the row
+			; BOARD_HEIGHT // the column
+		];
+
+pub type BoardKeyboard = [(LetterState, char); 26];
+
+
 
 pub struct Board 
 {
-	tiles: [
-			[(LetterState, char); BOARD_WIDTH] // the row
-			; BOARD_HEIGHT // the column
-		],
+	pub tiles: BoardTiles,
 
-	keyboard: [(LetterState, char); 26],
+	pub keyboard: BoardKeyboard,
 	
-	active_row: usize,
-	active_col: usize,
+	pub active_row: usize,
+	pub active_col: usize,
 
 	word: String,
 }
