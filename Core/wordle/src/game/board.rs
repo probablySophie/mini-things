@@ -27,6 +27,7 @@ pub struct Board
 	pub active_col: usize,
 
 	word: String,
+	words: Vec<String>,
 }
 impl Default for Board
 {
@@ -39,13 +40,16 @@ impl Default for Board
 			keyboard[i].1 = char;
 		}
 
+		let loaded_words: Vec<String> = words::load_words().unwrap();
+
 		Board
 		{
 			tiles: [ [(LetterState::default(), ' '); BOARD_WIDTH]; BOARD_HEIGHT ],
 			keyboard,
 			active_row: 0,
 			active_col: 0,
-			word: "goals".to_owned(),
+			word: words::new_word(&loaded_words),
+			words: loaded_words,
 		}
 	}
 }
@@ -73,7 +77,7 @@ impl Board
 		let guess_word = self.current_guess_word();
 
 		// is the current word valid?
-		if ! words::is_valid(guess_word.clone())
+		if ! words::is_valid(guess_word.clone(), &self.words)
 		{
 			return Err(()) // the current word isn't a valid word
 		}
@@ -206,11 +210,18 @@ impl Board
 		{
 			for (x, word_letter) in word.clone().iter().enumerate()
 			{
-				if &letter == word_letter
+				match score[i]
 				{
-					score[i] = LetterState::Almost;
+					LetterState::Perfect => {},	
 
-					word[x] = ' ';
+					_ => {
+						if &letter == word_letter
+						{
+							score[i] = LetterState::Almost;
+
+							word[x] = ' ';
+						}
+					}
 				}
 			}
 		}
