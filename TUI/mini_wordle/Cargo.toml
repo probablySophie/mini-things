@@ -7,5 +7,6 @@ edition = "2021"
 
 [dependencies]
 TUI = { version = "0.1.0", path = "../../Lib/TUI" }
+crossterm = "0.27.0"
 mini_core = { version = "0.1.0", path = "../../Lib/core" }
 wordle = { version = "0.1.0", path = "../../Core/wordle" }
